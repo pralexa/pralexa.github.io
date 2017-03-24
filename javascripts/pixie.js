@@ -26,7 +26,7 @@ if (!('webkitSpeechRecognition' in window)) {
   final_transcript = '';
   old_transcript = '';
   recognition.lang = 'en-US'//select_dialect.value;
-  recognition.start();
+  //recognition.start();
 
   }
 
@@ -69,14 +69,34 @@ if (!('webkitSpeechRecognition' in window)) {
   };
 
   var synth = window.speechSynthesis;
-  setTimeout(function(){  var utterThis = new SpeechSynthesisUtterance("Hi, ask me anything? ");
+  /*setTimeout(function(){  
+    var utterThis = new SpeechSynthesisUtterance("Hi, ask me anything? ");
   	utterThis.voice = synth.getVoices()[49];
   	utterThis.pitch = 1.1;
   	utterThis.rate = 0.9;
   	synth.speak(utterThis);
-  }, 1000);
+  }, 1000);*/
  
   //utterThis.pitch = pitch.value;
   //utterThis.rate = rate.value;
+
+  function ask(text){
+   $http($SCRIPT_ROOT+'/api')
+       .get({question: text})
+       .then((value)=>{
+           var data = JSON.parse(value);
+           var utterThis = new SpeechSynthesisUtterance(data.result);
+           utterThis.voice = synth.getVoices()[49];
+           utterThis.pitch = 1.1;
+           utterThis.rate = 0.9;
+           synth.speak(utterThis);
+           console.log("Pixie: "+data.result)
+
+        })
+        .catch((err)=>{
+            console.log(err);
+        });
+      return undefined;
+  }
 }
 startButton()
