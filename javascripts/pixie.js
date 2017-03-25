@@ -19,7 +19,7 @@ if (!('webkitSpeechRecognition' in window)) {
   	console.log('stop')
   }
 
-  $SCRIPT_ROOT = 'https://veppaf1khi.execute-api.us-east-1.amazonaws.com/jiange';
+  $SCRIPT_ROOT = 'http://127.0.0.1:5000'//'https://veppaf1khi.execute-api.us-east-1.amazonaws.com/jiange';
 
  function startButton(event) {
   
@@ -46,7 +46,7 @@ if (!('webkitSpeechRecognition' in window)) {
     	console.log(final_transcript);
 
     	
-        $http($SCRIPT_ROOT+'/api')
+        /*$http($SCRIPT_ROOT+'/api')
             .get({question: final_transcript})
             .then((value)=>{
             	console.log(value)
@@ -60,13 +60,20 @@ if (!('webkitSpeechRecognition' in window)) {
             })
             .catch((err)=>{
                 console.log(err);
-            });
+            });*/
     }
     
     //final_transcript = capitalize(final_transcript);
     //final_span.innerHTML = linebreak(final_transcript);
     //interim_span.innerHTML = linebreak(interim_transcript);
   };
+
+  function guidGenerator() {
+      var S4 = function() {
+         return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+      };
+      return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  }
 
   var synth = window.speechSynthesis;
   /*setTimeout(function(){  
@@ -79,10 +86,11 @@ if (!('webkitSpeechRecognition' in window)) {
  
   //utterThis.pitch = pitch.value;
   //utterThis.rate = rate.value;
-
+  userID = guidGenerator();
+  
   function ask(text){
    $http($SCRIPT_ROOT+'/api')
-       .get({question: text})
+       .get({body: text, userID: userID})
        .then((value)=>{
            var data = JSON.parse(value);
            var utterThis = new SpeechSynthesisUtterance(data.result);
