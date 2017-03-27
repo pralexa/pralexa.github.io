@@ -19,7 +19,7 @@ if (!('webkitSpeechRecognition' in window)) {
   	console.log('stop')
   }
 
-  $SCRIPT_ROOT = 'http://127.0.0.1:5000'//'https://veppaf1khi.execute-api.us-east-1.amazonaws.com/jiange';
+  $SCRIPT_ROOT = 'https://veppaf1khi.execute-api.us-east-1.amazonaws.com/jiange'; //'http://127.0.0.1:5000';
 
  function startButton(event) {
   
