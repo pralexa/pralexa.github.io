@@ -19,8 +19,8 @@ if (!('webkitSpeechRecognition' in window)) {
   	console.log('stop')
   }
 
-  $SCRIPT_ROOT = 'https://veppaf1khi.execute-api.us-east-1.amazonaws.com/jiange'; //'http://127.0.0.1:5000';
-
+  $SCRIPT_STAGE = 'https://hhude7sbn4.execute-api.us-east-1.amazonaws.com/staging'; //'http://127.0.0.1:5000';
+  $SCRIPT_PRODUCTION = 'https://e6nia5nblk.execute-api.us-east-1.amazonaws.com/production';
  function startButton(event) {
   
   final_transcript = '';
@@ -88,8 +88,9 @@ if (!('webkitSpeechRecognition' in window)) {
   //utterThis.rate = rate.value;
   userID = guidGenerator();
   
-  function ask(text){
-   $http($SCRIPT_ROOT+'/api')
+  function ask(text, production = false){
+	var url = production?$SCRIPT_PRODUCTION:$SCRIPT_STAGE;
+   $http(url+'/api')
        .get({body: text, userID: userID})
        .then((value)=>{
            var data = JSON.parse(value);
@@ -98,7 +99,7 @@ if (!('webkitSpeechRecognition' in window)) {
            utterThis.pitch = 1.1;
            utterThis.rate = 0.9;
            synth.speak(utterThis);
-           console.log("Pixie: "+data.result)
+           console.log(production?"Pixie-production-"+data.result:"Pixie-staging-"+data.result)
 
         })
         .catch((err)=>{
